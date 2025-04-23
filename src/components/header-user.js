@@ -4,7 +4,7 @@ const User = (props) => {
     const [username, setUsername] = useState(props.username)
 
     const showExit = () => {
-        setUsername("Выйти")
+        setUsername("выйти")
     }
 
     const showUsername = () => {
@@ -16,9 +16,9 @@ const User = (props) => {
             onMouseEnter={() => { showExit() }}
             onMouseLeave={() => { showUsername() }}
             onClick={() => { props.dropUsername() }}
-            className="user-logout-button"
+            className="user-logout-button border-left text-end mx-3 text-truncate"
         >
-            {username}
+            <h5 className="m-0">{username}</h5>
         </button>
     )
 }
