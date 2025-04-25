@@ -1,12 +1,31 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import Message from "./message"
 
 const Chat = (props) => {
+    const [messagesArray, setMessagesArray] = useState()
+    useEffect(() => {
+        const messages = props.messages.map((message) => 
+            <Message message={message} username={props.username} messageFunctions={props.messageFunctions} key={message.id}/>
+        )
+        setMessagesArray(messages)
+    }, [props.messages])
+
+    // const RenderMessages = () => {
+    //     const messagesArray = props.messages.map((message) => 
+    //         <Message message={message} username={props.username} messageFunctions={props.messageFunctions} key={message.id}/>
+    //     )
+    //     return messagesArray
+    // }
+
+
+    // const messagesArray = props.messages.map((message) => 
+    //     <Message message={message} username={props.username} messageFunctions={props.messageFunctions} key={message.id}/>
+    // )
+
+    console.log(messagesArray)
+
     return <div className={props.className}>
-        <Message message={props.messages[0]} username={props.username} messageFunctions={props.messageFunctions} />
-        <Message message={props.messages[1]} username={props.username} messageFunctions={props.messageFunctions} />
-        <Message message={props.messages[2]} username={props.username} messageFunctions={props.messageFunctions} />
-        <Message message={props.messages[3]} username={props.username} messageFunctions={props.messageFunctions} />
+        {messagesArray}
     </div>
 }
 

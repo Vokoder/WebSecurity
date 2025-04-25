@@ -44,18 +44,10 @@ const App = () => {
     }
 
     const sendMessage = (message) => {
-        console.log(messages)
-        let temp = [...messages]
-        temp.push({ id: 4, username: "usernm", data: "15", edited: true, message: "msg" })
-        setMessages(temp)
-        console.log(messages)
-        alert(isEditingMode)
-        if (isEditingMode) {
-
-            isEditingMode = false
-        } else {
-
+        if (message.trim()) {
+            alert(`${message} отправлено`)
         }
+        //
     }
 
     const editMessage = (message) => {
