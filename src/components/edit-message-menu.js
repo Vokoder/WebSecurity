@@ -1,27 +1,23 @@
 import React from "react"
 
 const Menu = (props) => {
-    // editMessageTrigger={props.editMessage}
+    const editButtonsClass = "edit-message-buttons col-12 user-select-none align-content-center"
     return (
-        <>
+        <div className="row w-100 h-100 text-center p-0 m-0">
             <div
-                className="col-12"
-                onClick={() => { alert(123) }}>
+                className={editButtonsClass}
+                onClick={() => { props.messageFunctions.startMessageEditing(props.message) }}>
                 редактировать
             </div>
             <div
-                className="col-12"
-                onClick={() => { }}
-            >
+                className={editButtonsClass}
+                onClick={() => { props.messageFunctions.deleteMessage(props.message) }}>
                 удалить
             </div>
-            <div
-                className="col-12"
-                onClick={() => { }}
-            >
+            <div className={editButtonsClass}>
                 отмена
             </div>
-        </>
+        </div>
     )
 }
 

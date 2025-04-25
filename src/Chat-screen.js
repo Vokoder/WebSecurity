@@ -14,12 +14,15 @@ const ChatScreen = (props) => {
             />
             <Chat
                 className="col-12 chat"
-                editMessageTrigger={props.editMessage}
                 username={props.username}
+                messages={props.messages}
+                messageFunctions={props.messageFunctions}
             />
             <Input
                 className="col-12 input d-flex justify-content-center row align-items-center p-0"
-                sendMessage={props.sendMessage}
+                messages={props.messages}
+                messageForEdit={props.messageForEdit}
+                messageFunctions={props.messageFunctions}
             />
         </div>
     )

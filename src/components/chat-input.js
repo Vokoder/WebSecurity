@@ -1,14 +1,28 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 
 const Input = (props) => {
-    const [message, setMessage] = useState()
+    const [message, setMessage] = useState("")
+    const [isEditingMode, setEditingMode] = useState(false)
+    useEffect(() => {
+        if (props.messageForEdit == null) {
+            setEditingMode(false)
+            setMessage("")
+        } else {
+            setEditingMode(true)
+            setMessage(props.messageForEdit.message)
+        }
+    }, [props.messageForEdit])
+
+    const abortEditing = () => {
+        props.messageFunctions.startMessageEditing(null)
+    }
 
     return (
         <div className={props.className}>
             <input
                 type="text"
                 placeholder="сообщение"
-                className="chat-input col-10 py-0 m-1 h-75"
+                className={`chat-input col-10 py-0 m-1 h-75`}
                 value={message}
                 onChange={
                     (event) => {
@@ -20,12 +34,18 @@ const Input = (props) => {
                 className="send-message-button col-1 p-0 m-1 h-75 text-truncate"
                 onClick={
                     () => {
-                        props.sendMessage(message)
+                        { isEditingMode ? props.messageFunctions.editMessage(message) : props.messageFunctions.sendMessage(message) }
                         setMessage("")
                     }
                 }
             >
-                отправить
+                {isEditingMode ? "изменить" : "отправить"}
+            </button>
+            <button
+                className={`message-abort-editing-button col-1 p-0 m-1 text-truncate ${!isEditingMode && "d-none"}`}
+                onClick={() => { abortEditing() }}
+            >
+                X
             </button>
         </div>
     )

@@ -61,6 +61,8 @@
 .message {
     height: auto;
     min-height: 10vh;
+    /* border: none; */
+    cursor: pointer;
 }
 
 .message.my {
@@ -69,4 +71,18 @@
 
 .message.others {
     background-color: rgb(245, 240, 230);
+}
+
+.edit-message-buttons {
+    /* background-color: rgba(200, 220, 240, 0.6); */
+    border: 1px solid rgba(200, 220, 240, 1);
+    height: 5vh;
+}
+
+.message-abort-editing-button {
+    border: none;
+    background-color: deepskyblue;
+    border: 1px solid deepskyblue;
+    width: 3.75vh;
+    height: 3.75vh;
 }

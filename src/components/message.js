@@ -5,7 +5,7 @@ import MessageView from "./message-view"
 const Message = (props) => {
     const isMy = props.username === props.message.username
     const message = <MessageView message={props.message} />
-    const editMessage = <EditMessage />
+    const editMessage = <EditMessage messageFunctions={props.messageFunctions} message={props.message} />
     const [isEditing, setIsEditing] = useState(false);
 
     const handleClick = () => {
@@ -13,11 +13,13 @@ const Message = (props) => {
     };
 
     return (
-        <div
-            onClick={() => { handleClick() }}
-            className={`message ${isMy ? "my" : "others"} col-4 row text-break my-2 mx-2`}
-        >
-            {isEditing ? editMessage : message}
+        <div className={`d-flex ${isMy ? "justify-content-end" : "justify-content-start"} col-12`}>
+            <div
+                onClick={() => { handleClick() }}
+                className={`message ${isMy ? "my" : "others"} col-4 row text-break my-2 mx-2 text-start user-select-none`}
+            >
+                {isEditing ? editMessage : message}
+            </div>
         </div>
     )
 }
