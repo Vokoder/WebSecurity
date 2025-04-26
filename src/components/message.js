@@ -4,7 +4,7 @@ import MessageView from "./message-view"
 
 const Message = (props) => {
     const isMy = props.username === props.message.username
-    const message = <MessageView message={props.message} />
+    const messageView = <MessageView message={props.message} />
     const editMessage = <EditMessage messageFunctions={props.messageFunctions} message={props.message} />
     const [isEditing, setIsEditing] = useState(false);
 
@@ -18,7 +18,7 @@ const Message = (props) => {
                 onClick={() => { handleClick() }}
                 className={`message ${isMy ? "my" : "others"} col-4 row text-break my-2 mx-2 text-start user-select-none`}
             >
-                {isEditing ? editMessage : message}
+                {isEditing ? editMessage : messageView}
             </div>
         </div>
     )

@@ -36,8 +36,6 @@
     width: 20vw;
     height: 80%;
     border: none;
-    /* border-width: 1px; */
-    /* border-color: rgba(34, 60, 80, 0.1); */
     background-color: rgb(245, 245, 245);
     text-decoration: none;
 }
@@ -53,15 +51,12 @@
 .send-message-button {
     border: none;
     background-color: deepskyblue;
-    /* border: 1px solid #a9a9a9; */
     border: 1px solid deepskyblue;
-    /* border-color: deepskyblue; */
 }
 
 .message {
     height: auto;
     min-height: 10vh;
-    /* border: none; */
     cursor: pointer;
 }
 
@@ -74,7 +69,6 @@
 }
 
 .edit-message-buttons {
-    /* background-color: rgba(200, 220, 240, 0.6); */
     border: 1px solid rgba(200, 220, 240, 1);
     height: 5vh;
 }
@@ -85,4 +79,8 @@
     border: 1px solid deepskyblue;
     width: 3.75vh;
     height: 3.75vh;
+}
+
+.message-secondary-text {
+    color: rgb(120, 120, 120);
 }
