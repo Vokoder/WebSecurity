@@ -34,4 +34,6 @@
     height: 60vh;
 }
 
-.auth-form {}
+.exception {
+    color: brown;
+}
