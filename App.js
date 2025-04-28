@@ -60,7 +60,7 @@ async function sendQueryToDB(query, values) {
 async function getMessages() {
     const query = `SELECT 
       m.id, 
-      m.datetime, 
+      to_char(m.datetime AT TIME ZONE 'Europe/Moscow', 'DD.MM.YYYY HH24:MI:SS') AS datetime,
       m.is_edited, 
       m.message, 
       u.username
@@ -86,6 +86,29 @@ server.on('connection', socket => {
         socket.send(response);
     });
 });
+
+async function broadcastMessages(server) {
+    server.clients.forEach(async client => {
+        if (client.readyState === WebSocket.OPEN && client.user_id) {
+            let response = {
+                responseCode: "ok",
+                requestType: "messages",
+                messages: await getMessages(),
+            }
+            client.send(JSON.stringify(response))
+        }
+    });
+}
+
+const setUser = (username, id, socket) => {
+    socket.username = username
+    socket.user_id = id
+}
+
+const dropUser = (socket) => {
+    socket.username = undefined
+    socket.user_id = undefined
+}
 
 async function getResponse(messageString, socket) {
     let response = {
@@ -119,18 +142,15 @@ async function getResponse(messageString, socket) {
         case "log in":
             if (message.password && message.username) {
                 const password = hashPassword(message.password)
-                const query = `SELECT EXISTS (
-                                SELECT 1 
-                                FROM public.users 
-                                WHERE username = $1 AND password = $2
-                            )`
+                const query = `SELECT id FROM public.users 
+                       WHERE username = $1 AND password = $2`
                 const values = [message.username, password]
                 const request = await sendQueryToDB(query, values)
-                if (request[0].exists) {
+                if (request && request.length > 0) {
                     response.responseCode = "ok"
                     response.username = message.username
                     response.messages = await getMessages()
-                    socket.username = message.username
+                    setUser(message.username, request[0].id, socket)
                 } else {
                     response.responseCode = `auth failed`
                 }
@@ -139,7 +159,7 @@ async function getResponse(messageString, socket) {
             }
             break;
         case "log out":
-            socket.username = undefined
+            dropUser(socket)
             response.responseCode = "ok"
             break;
         case "register":
@@ -157,15 +177,14 @@ async function getResponse(messageString, socket) {
                     const password = hashPassword(message.password)
                     const query = `INSERT INTO public.users (username, password)
                                     VALUES ($1, $2)
-                                    RETURNING username
-                    `
+                                    RETURNING id`
                     const values = [message.username, password]
                     const request = await sendQueryToDB(query, values)
-                    if (request[0].username) {
+                    if (request && request.length > 0) {
                         response.responseCode = "ok"
-                        response.username = request[0].username
+                        response.username = message.username
                         response.messages = await getMessages()
-                        socket.username = request[0].username
+                        setUser(message.username, request[0].id, socket)
                     } else {
                         response.responseCode = "database failure"
                     }
@@ -175,7 +194,22 @@ async function getResponse(messageString, socket) {
             }
             break;
         case "send":
-
+            if (socket.username && message.message) {
+                // const date = new Date();
+                // const now = date.toLocaleString()
+                const query = `INSERT INTO public.messages (datetime, message, user_id)
+                                VALUES (NOW(), $1, $2)
+                                RETURNING id`
+                const values = [message.message, socket.user_id]
+                const request = await sendQueryToDB(query, values)
+                if (request && request.length > 0) {
+                    response.responseCode = "ok"
+                    response.username = message.username
+                    broadcastMessages(server)
+                } else {
+                    response.responseCode = "database failure"
+                }
+            }
             break;
         case "edit":
 
@@ -184,6 +218,7 @@ async function getResponse(messageString, socket) {
 
             break;
         default:
+            dropUser(socket)
             response.responseCode = "request type is incorrect"
             break;
     }
@@ -193,9 +228,3 @@ async function getResponse(messageString, socket) {
 
     return responseString
 }
-
-// server.clients.forEach(client => {
-//     if (client.readyState === WebSocket.OPEN) {
-//       client.send(outgoing);
-//     }
-//   });
