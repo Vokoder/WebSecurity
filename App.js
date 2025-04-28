@@ -27,7 +27,6 @@ const convertMessagesFromDBToJSON = (dbMessages) => {
 const WebSocket = require('ws');
 const { Pool } = require('pg');
 const crypto = require('crypto');
-// const dbRequests = require('./dbRequests')
 
 const pool = new Pool({
     user: 'postgres',
@@ -238,7 +237,7 @@ async function getResponse(messageString, socket) {
     }
 
     const responseString = JSON.stringify(response)
-    console.log(`request: "${messageString}" \nresponse: "${responseString}"`)//
+    // console.log(`request: "${messageString}" \nresponse: "${responseString}"`)//
 
     return responseString
 }
