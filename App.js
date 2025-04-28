@@ -137,7 +137,6 @@ async function getResponse(messageString, socket) {
                 response.username = socket.username
                 response.messages = await getMessages()
             }
-            // response.username = "user nickname"//
             break;
         case "log in":
             if (message.password && message.username) {
@@ -195,8 +194,6 @@ async function getResponse(messageString, socket) {
             break;
         case "send":
             if (socket.username && message.message) {
-                // const date = new Date();
-                // const now = date.toLocaleString()
                 const query = `INSERT INTO public.messages (datetime, message, user_id)
                                 VALUES (NOW(), $1, $2)
                                 RETURNING id`
@@ -212,10 +209,27 @@ async function getResponse(messageString, socket) {
             }
             break;
         case "edit":
-
+            if (socket.username && message.message) {
+                const query = `UPDATE public.messages
+                                SET message = $1, is_edited = true
+                                WHERE user_id = $2 AND id = $3`
+                const values = [message.message.newMessage, socket.user_id, message.message.id]
+                await sendQueryToDB(query, values)
+                response.username = socket.username
+                response.responseCode = "ok"
+                broadcastMessages(server)
+            }
             break;
         case "delete":
-
+            if (socket.username && message.messageId) {
+                const query = `DELETE FROM public.messages
+                                WHERE user_id = $1 AND id = $2`
+                const values = [socket.user_id, message.messageId]
+                await sendQueryToDB(query, values)
+                response.username = socket.username
+                response.responseCode = "ok"
+                broadcastMessages(server)
+            }
             break;
         default:
             dropUser(socket)
