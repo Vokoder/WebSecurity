@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 
 const User = (props) => {
     const [username, setUsername] = useState(props.username)

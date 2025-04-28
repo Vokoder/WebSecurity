@@ -34,7 +34,7 @@ const Input = (props) => {
                 className="send-message-button col-1 p-0 m-1 h-75 text-truncate"
                 onClick={
                     () => {
-                        { isEditingMode ? props.messageFunctions.editMessage(message) : props.messageFunctions.sendMessage(message) }
+                        isEditingMode ? props.messageFunctions.editMessage(message) : props.messageFunctions.sendMessage(message)
                         setMessage("")
                     }
                 }

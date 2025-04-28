@@ -10,9 +10,16 @@ class AuthScreen extends React.Component {
         return (
             <div className="auth-window row d-flex justify-content-center align-items-center">
                 <div className="auth-menu row d-flex col-6 p-0 m-0 justify-content-center align-items-center">
-                    <button onClick={() => {this.props.temp("user nickname")}}>Авторизоваться Dev</button>
-                    <Autorisation className={auth_element_class + " border-right"} formClassName={auth_form_class} />
-                    <Registration className={auth_element_class + " border-left"} formClassName={auth_form_class} />
+                    <Autorisation
+                        className={`${auth_element_class} border-right`}
+                        formClassName={auth_form_class}
+                        authFunctions={this.props.authFunctions}
+                    />
+                    <Registration
+                        className={`${auth_element_class} border-left`}
+                        formClassName={auth_form_class}
+                        authFunctions={this.props.authFunctions}
+                    />
                 </div>
             </div>
         )

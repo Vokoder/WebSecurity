@@ -1,25 +1,33 @@
 import React, { useState } from "react"
 import LoginPassword from "./login-password-form-part"
+import authValidator from "./auth-validator"
 
-const Form = (formClassName) => {
+const Form = (props) => {
     const [login, setLogin] = useState("")
     const [password, setPassword] = useState("")
+    const [exception, setException] = useState(null)
 
     const AutorisationClick = (event) => {
         event.preventDefault()
-        alert(`${login} ${password}`)
+        setLogin(login.trim())
+        setPassword(password.trim())
+        if (!authValidator(ThrowExeption, login, password)) {
+            return
+        }
+        if (props.authFunctions.logIn(ThrowExeption, login, password)) {
+            setException(null)
+        }
+
         //валидация данных. В случае провала - ThrowException, иначе вызвать обработчик из App
-        return false
     }
-    
-    const ThrowExeption = () => {
-        alert("exception")
-        //вывод неверного ввода на экран
+
+    const ThrowExeption = (errorMessage) => {
+        setException(errorMessage)
     }
 
     const rowClass = "row p-0 my-1 w-100 mx-0"
 
-    return (<form className={formClassName.formClassName} onSubmit={AutorisationClick}>
+    return (<form className={props.formClassName} onSubmit={AutorisationClick}>
         <LoginPassword
             rowClass={rowClass}
             login={login}
@@ -27,15 +35,20 @@ const Form = (formClassName) => {
             password={password}
             setPassword={setPassword}
         />
-        <div className={rowClass + " my-3"}>
+        <div className={`${rowClass} ${exception == null && "d-none"} exception`}>
+            <em>
+                {exception}
+            </em>
+        </div>
+        <div className={`${rowClass} my-3`}>
             <input type="submit" value="Войти" />
         </div>
     </form>)
 }
 
-const Autorisation = (promp) => {
-    return (<div className={promp.className ? promp.className : ""} >
-        <Form formClassName={promp.formClassName ? promp.formClassName : ""} />
+const Autorisation = (props) => {
+    return (<div className={props.className ? props.className : ""} >
+        <Form formClassName={props.formClassName ? props.formClassName : ""} authFunctions={props.authFunctions} />
     </div >)
 }
 

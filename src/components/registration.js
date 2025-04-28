@@ -1,25 +1,35 @@
 import React, { useState } from "react"
 import LoginPassword from "./login-password-form-part"
+import authValidator from "./auth-validator"
 
-const Form = (formClassName) => {
+const Form = (props) => {
     const [login, setLogin] = useState("")
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
+    const [exception, setException] = useState(null)
 
     const RegistrationClick = (event) => {
         event.preventDefault()
-        alert(`${login} ${password} ${confirmPassword}`)
+        setLogin(login.trim())
+        setPassword(password.trim())
+        setConfirmPassword(confirmPassword.trim())
+        if (!authValidator(ThrowExeption, login, password, confirmPassword)) {
+            return
+        }
+        if (props.authFunctions.register(ThrowExeption, login, password)) {
+            setException(null)
+        }
+
         //валидация данных. В случае провала - ThrowException, иначе вызвать обработчик из App
     }
 
-    const ThrowExeption = () => {
-        alert("exception")
-        //вывод неверного ввода на экран
+    const ThrowExeption = (errorMessage) => {
+        setException(errorMessage)
     }
 
     const rowClass = "row p-0 my-1 w-100 mx-0"
 
-    return (<form className={formClassName.formClassName} onSubmit={RegistrationClick}>
+    return (<form className={props.formClassName} onSubmit={RegistrationClick}>
         <LoginPassword
             rowClass={rowClass}
             login={login}
@@ -45,6 +55,11 @@ const Form = (formClassName) => {
                 }
             />
         </div>
+        <div className={`${rowClass} ${exception == null && "d-none"} exception`}>
+            <em>
+                {exception}
+            </em>
+        </div>
         <div className={rowClass + " my-3"}>
             <input type="submit" value="Войти" />
         </div>
@@ -52,9 +67,9 @@ const Form = (formClassName) => {
 }
 
 
-const Registration = (promp) => {
-    return (<div className={promp.className ? promp.className : ""}>
-        <Form formClassName={promp.formClassName ? promp.formClassName : ""} />
+const Registration = (props) => {
+    return (<div className={props.className ? props.className : ""}>
+        <Form formClassName={props.formClassName ? props.formClassName : ""} authFunctions={props.authFunctions}/>
     </div>)
 }
 
