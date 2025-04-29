@@ -30,6 +30,7 @@ const Form = (props) => {
     const rowClass = "row p-0 my-1 w-100 mx-0"
 
     return (<form className={props.formClassName} onSubmit={RegistrationClick}>
+        <div className="text-center h5 py-1">Регистрация</div>
         <LoginPassword
             rowClass={rowClass}
             login={login}
