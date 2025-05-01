@@ -44,6 +44,22 @@
     border-left: 1px solid rgb(225, 225, 225);
 }
 
+@media screen and (max-width: 767.9px) {
+    .user-logout-button {
+        width: 40vw;
+    }
+}
+
+@media screen and (max-width: 575.9px) {
+    .user-logout-button {
+        width: 100vw;
+    }
+
+    .border-left {
+        border: none
+    }
+}
+
 .chat-input {
     border: 1px solid #a9a9a9;
 }

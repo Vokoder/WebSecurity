@@ -16,7 +16,7 @@ const Message = (props) => {
         <div className={`d-flex ${isMy ? "justify-content-end" : "justify-content-start"} col-12`}>
             <div
                 onClick={() => { handleClick() }}
-                className={`message ${isMy ? "my" : "others"} col-4 row text-break my-2 mx-2 text-start user-select-none`}
+                className={`message ${isMy ? "my" : "others"} col-12 col-sm-10 col-md-8 col-lg-5 col-xl-4 row text-break my-2 mx-0 mx-sm-2 text-start user-select-none`}
             >
                 {isEditing ? editMessage : messageView}
             </div>

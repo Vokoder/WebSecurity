@@ -9,7 +9,7 @@ class AuthScreen extends React.Component {
 
         return (
             <div className="auth-window row d-flex justify-content-center align-items-center">
-                <div className="auth-menu row d-flex col-6 p-0 m-0 justify-content-center align-items-center">
+                <div className="auth-menu row d-flex col-12 col-lg-6 p-0 m-0 justify-content-center align-items-center">
                     <Autorisation
                         className={`${auth_element_class} border-right`}
                         formClassName={auth_form_class}
