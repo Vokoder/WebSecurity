@@ -64,13 +64,28 @@ const Form = (props) => {
         <div className={rowClass + " my-3"}>
             <input type="submit" value="Войти" />
         </div>
+        {props.toggleLink && (
+            <div className="toggle-auth-container">
+                <button
+                    type="button"
+                    className="toggle-auth-text"
+                    onClick={props.toggleLink.onClick}
+                >
+                    {props.toggleLink.text}
+                </button>
+            </div>
+        )}
     </form>)
 }
 
 
 const Registration = (props) => {
     return (<div className={props.className ? props.className : ""}>
-        <Form formClassName={props.formClassName ? props.formClassName : ""} authFunctions={props.authFunctions}/>
+        <Form
+            formClassName={props.formClassName ? props.formClassName : ""}
+            authFunctions={props.authFunctions}
+            toggleLink={props.toggleLink}
+        />
     </div>)
 }
 

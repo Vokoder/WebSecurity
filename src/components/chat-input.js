@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react"
+import sendIcon from "../icons/send-icon.png"
+import cancelIcon from "../icons/cancel-icon.png"
 
 const Input = (props) => {
     const [message, setMessage] = useState("")
@@ -22,7 +24,7 @@ const Input = (props) => {
             <input
                 type="text"
                 placeholder="сообщение"
-                className={`chat-input col-10 py-0 m-1 h-75`}
+                className={`chat-input ${isEditingMode ? "col-8" : "col-9"} ${isEditingMode ? "col-sm-10" : "col-sm-11"} ${isEditingMode ? "col-md-10" : "col-md-11"} col-xl-11 py-0 m-1 h-75`}
                 value={message}
                 onChange={
                     (event) => {
@@ -31,7 +33,7 @@ const Input = (props) => {
                 }
             />
             <button
-                className="send-message-button col-1 p-0 m-1 h-75 text-truncate"
+                className="send-message-button col-1 p-0 m-1 text-truncate d-flex justify-content-center"
                 onClick={
                     () => {
                         isEditingMode ? props.messageFunctions.editMessage(message) : props.messageFunctions.sendMessage(message)
@@ -39,13 +41,14 @@ const Input = (props) => {
                     }
                 }
             >
-                {isEditingMode ? "изменить" : "отправить"}
+                {/* {isEditingMode ? "изменить" : "отправить"} */}
+                <img src={sendIcon} alt="Send" className="p-0 m-0 w-75 h-75 align-self-center"/>
             </button>
             <button
-                className={`message-abort-editing-button col-1 p-0 m-1 text-truncate ${!isEditingMode && "d-none"}`}
+                className={`message-abort-editing-button col-1 p-0 m-1 text-truncate ${isEditingMode ? "d-flex" : "d-none"} justify-content-center`}
                 onClick={() => { abortEditing() }}
             >
-                X
+                <img src={cancelIcon} alt="Cancel" className="p-0 m-0 w-75 h-75 align-self-center"/>
             </button>
         </div>
     )
