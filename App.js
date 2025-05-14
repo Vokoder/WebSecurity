@@ -99,7 +99,7 @@ async function getResponse(messageString, socket) {
             break;
         case "register":
             if (message.password && message.username) {
-                if (!/[!@#$%^&*+[\]:;,.?~\\/{}<>]/.test(message.username)) {
+                if (/[!@#$%^&*+[\]:;,.?~\\/{}<>]/.test(message.username)) {
                     response.responseCode = `Invalid login`
                     break
                 }
