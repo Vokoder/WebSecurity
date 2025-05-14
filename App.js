@@ -48,6 +48,12 @@ async function getResponse(messageString, socket) {
 
     try {
         message = JSON.parse(messageString)
+        if (message.username) {
+            message.username = message.username.trim();
+        }
+        if (message.password) {
+            message.password = message.password.trim();
+        }        
     } catch {
         response.responseCode = "request is not a JSON"
         return response
@@ -93,6 +99,10 @@ async function getResponse(messageString, socket) {
             break;
         case "register":
             if (message.password && message.username) {
+                if (!/[!@#$%^&*+[\]:;,.?~\\/{}<>]/.test(username)) {
+                    response.responseCode = `Invalid login`
+                    break
+                }
                 const query = `SELECT EXISTS (
                                 SELECT 1 
                                 FROM public.users 
